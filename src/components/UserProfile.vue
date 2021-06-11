@@ -13,10 +13,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      user: null,
-    }
+  computed: {
+    user() {
+      return this.$auth.currentUser
+    },
   },
 }
 </script>

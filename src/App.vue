@@ -4,9 +4,28 @@
       <router-link to="/BeforeSignIn">Before Sign In Page</router-link>
       <router-link to="/AfterSignIn">After Sign In Page</router-link>
     </div>
+    <div class="sign-in">
+      <span @click="signIn">Sign In</span>
+      <span @click="signOut">Sign Out</span>
+    </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import firebase from "firebase"
+export default {
+  methods: {
+    signIn() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithPopup(provider)
+    },
+    signOut() {
+      firebase.auth().signOut()
+    },
+  },
+}
+</script>
 
 <style>
 #app {
@@ -24,7 +43,21 @@
 #nav a {
   font-weight: bold;
   color: #2c3e50;
-  padding: 0 10px;
+  padding: 0 1rem;
+}
+
+#nav a:hover {
+  color: #2c3e502b;
+}
+
+.sign-in span {
+  font-weight: bold;
+  color: #2c3e50;
+  padding: 0 1rem;
+}
+
+.sign-in span:hover {
+  color: #2c3e502b;
 }
 
 #nav a.router-link-exact-active {
