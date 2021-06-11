@@ -1,9 +1,9 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import BeforeSignIn from "@/views/BeforeSignIn.vue";
-import AfterSignIn from "@/views/AfterSignIn.vue";
+import Vue from "vue"
+import VueRouter from "vue-router"
+import BeforeSignIn from "@/views/BeforeSignIn.vue"
+import AfterSignIn from "@/views/AfterSignIn.vue"
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
@@ -20,12 +20,12 @@ const routes = [
     name: "AfterSignIn",
     component: AfterSignIn,
   },
-];
+]
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
-});
+})
 
-export default router;
+export default router
