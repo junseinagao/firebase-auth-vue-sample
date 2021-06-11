@@ -45,3 +45,28 @@ const store = new Vuex.Store({
 })
 
 export default store
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        let userProfile = {
+          uid: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+        }
+        // doc.exists がない === 初回ログイン
+        // はじめてのログインなので、 userProfile を firestore に保存
+        if (!doc.exists) {
+          firebase.firestore().collection("users").doc(user.uid).set(userProfile)
+        }
+        store.commit("setUser", userProfile)
+      })
+  } else {
+    store.commit("setUser", { uid: "", displayName: "", photoURL: "" })
+  }
+})
