@@ -18,10 +18,11 @@ export default {
   methods: {
     signIn() {
       const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithPopup(provider)
+      firebase.auth().signInWithRedirect(provider)
     },
     signOut() {
       firebase.auth().signOut()
+      this.$router.push("/BeforeSignIn")
     },
   },
 }
