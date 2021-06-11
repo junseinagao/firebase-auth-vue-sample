@@ -29,6 +29,8 @@ const router = new VueRouter({
   routes,
 })
 
+// Vue Router のグローバルガードで、ログインしてない場合は、BeforeSignInにしか行けなくする。
+
 let isSignedIn = () => {
   return firebase.auth().currentUser
 }
