@@ -29,17 +29,12 @@ const router = new VueRouter({
   routes,
 })
 
-let isSignedIn = false
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    isSignedIn = true
-  } else {
-    isSignedIn = false
-  }
-})
+let isSignedIn = () => {
+  return firebase.auth().currentUser
+}
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "BeforeSignIn" && !isSignedIn) {
+  if (to.name !== "BeforeSignIn" && !isSignedIn()) {
     next("/BeforeSignIn")
   } else {
     next()
