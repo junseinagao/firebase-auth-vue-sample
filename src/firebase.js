@@ -1,7 +1,7 @@
 import firebase from "firebase"
 import "firebase/firestore"
 import "firebase/auth"
-
+import store from "@/store"
 const firebaseConfig = {
   apiKey: "AIzaSyDcSXTfTQ6rsYu6NS467aCDctg2b7niP0w",
   authDomain: "webexpert-demo-project.firebaseapp.com",
@@ -12,3 +12,11 @@ const firebaseConfig = {
 }
 
 firebase.initializeApp(firebaseConfig)
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.commit("setUser", user)
+  } else {
+    store.dispatch("signOut")
+  }
+})

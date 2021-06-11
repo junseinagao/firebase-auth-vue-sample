@@ -13,26 +13,14 @@
 </template>
 
 <script>
-import firebase from "firebase"
 export default {
   methods: {
     signIn() {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(provider)
+      this.$store.dispatch("signInWithGoogle")
     },
     signOut() {
-      firebase.auth().signOut()
-      this.$router.push("/BeforeSignIn")
+      this.$store.dispatch("signOut")
     },
-  },
-  mounted() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.$store.dispatch("signIn", user)
-      } else {
-        this.$store.dispatch("signOut")
-      }
-    })
   },
 }
 </script>

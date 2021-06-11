@@ -1,9 +1,10 @@
 import Vue from "vue"
 import Vuex from "vuex"
+import firebase from "firebase"
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     user: {
       uid: "",
@@ -13,23 +14,24 @@ export default new Vuex.Store({
   },
   mutations: {
     setUser(state, user) {
-      state.user.uid = user.uid
-      state.user.displayName = user.displayName
-      state.user.photoURL = user.photoURL
+      const { uid, displayName, photoURL } = user
+      state.user.uid = uid
+      state.user.displayName = displayName
+      state.user.photoURL = photoURL
     },
   },
   actions: {
-    signIn(context, user) {
-      console.log("in sign in action", user)
-      if (user) {
-        const { uid, displayName, photoURL } = user
-        context.commit("setUser", { uid, displayName, photoURL })
-      } else {
-        context.commit("setUser", { uid: "", displayName: "", photoURL: "" })
-      }
+    signInWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithRedirect(provider)
     },
     signOut(context) {
-      context.commit("setUser", { uid: "", displayName: "", photoURL: "" })
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          context.commit("setUser", { uid: "", displayName: "", photoURL: "" })
+        })
     },
   },
   getters: {
@@ -41,3 +43,5 @@ export default new Vuex.Store({
     },
   },
 })
+
+export default store
