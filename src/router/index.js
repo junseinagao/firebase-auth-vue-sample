@@ -2,7 +2,7 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import BeforeSignIn from "@/views/BeforeSignIn.vue"
 import AfterSignIn from "@/views/AfterSignIn.vue"
-import firebase from "firebase"
+import store from "@/store"
 
 Vue.use(VueRouter)
 
@@ -29,17 +29,12 @@ const router = new VueRouter({
   routes,
 })
 
-let isSignedIn = false
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    isSignedIn = true
-  } else {
-    isSignedIn = false
-  }
-})
+const isSignedIn = () => {
+  return store.getters.isSignedIn
+}
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "BeforeSignIn" && !isSignedIn) {
+  if (to.name !== "BeforeSignIn" && !isSignedIn()) {
     next("/BeforeSignIn")
   } else {
     next()

@@ -15,7 +15,7 @@
 export default {
   computed: {
     user() {
-      return this.$auth.currentUser
+      return this.$store.state.user
     },
   },
 }

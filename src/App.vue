@@ -25,6 +25,15 @@ export default {
       this.$router.push("/BeforeSignIn")
     },
   },
+  mounted() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch("signIn", user)
+      } else {
+        this.$store.dispatch("signOut")
+      }
+    })
+  },
 }
 </script>
 
