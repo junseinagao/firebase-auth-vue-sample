@@ -29,14 +29,32 @@ const router = new VueRouter({
   routes,
 })
 
-// Vue Router のグローバルガードで、ログインしてない場合は、BeforeSignInにしか行けなくする。
-
-let isSignedIn = () => {
-  return firebase.auth().currentUser
+const isSignedIn = async () => {
+  // Promise を使って、onAuthStateChanged が完了するまで待つ
+  return await new Promise((resolve, reject) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(
+      (user) => {
+        if (user) {
+          unsubscribe()
+          resolve(true)
+        } else {
+          unsubscribe()
+          resolve(false)
+        }
+      },
+      (error) => {
+        unsubscribe()
+        reject(error)
+      }
+    )
+  })
 }
 
-router.beforeEach((to, from, next) => {
-  if (to.name !== "BeforeSignIn" && !isSignedIn()) {
+// Vue Router のグローバルガードで、ログインしてない場合は、BeforeSignInにしか行けなくする。
+
+router.beforeEach(async (to, from, next) => {
+  const auth = await isSignedIn()
+  if (to.name !== "BeforeSignIn" && !auth) {
     next("/BeforeSignIn")
   } else {
     next()

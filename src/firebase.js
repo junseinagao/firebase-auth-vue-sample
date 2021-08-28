@@ -18,9 +18,13 @@ firebase.initializeApp(firebaseConfig)
  * Vue.observable を使って、firebase.auth()をVueアプリ全体に共有する。
  * this.$authがアプリ全体でアクセスできる様になる。
  * @example
- * firebase.auth().currentUser.displayにアクセスする例。任意のコンポーネントで以下の様に記述できる。
- * ```js
- * this.$auth.currentUser.displayName // "displayName" or ""
+ * computed() を通じて firebase.auth().currentUser.displayにアクセスする例。任意のコンポーネントで以下の様に記述できる。
+ * ```vue
+ * computed: {
+ *  user() {
+ *    reutrn this.$auth.currentUser
+ *  }
+ * }
  * ```
  */
 
